@@ -26,8 +26,7 @@ if data_source == 'alphavantage':
     # Save data to this file
     file_to_save = 'stock_market_data-%s.csv'%ticker
 
-    # If you haven't already saved data,
-    # Go ahead and grab the data from the url
+
     # And store date, low, high, volume, close, open values to a Pandas DataFrame
     if not os.path.exists(file_to_save):
         with urllib.request.urlopen(url_string) as url:
@@ -44,16 +43,12 @@ if data_source == 'alphavantage':
         print('Data saved to : %s'%file_to_save)        
         df.to_csv(file_to_save)
 
-    # If the data is already there, just load it from the CSV
     else:
         print('File already exists. Loading data from CSV')
         df = pd.read_csv(file_to_save)
 
 else:
 
-    # ====================== Loading Data from Kaggle ==================================
-    # You will be using HP's data. Feel free to experiment with other data.
-    # But while doing so, be careful to have a large enough dataset and also pay attention to the data normalization
     df = pd.read_csv(os.path.join('Stocks','hpq.us.txt'),delimiter=',',usecols=['Date','Open','High','Low','Close'])
     print('Loaded data from the Kaggle repository')
 
@@ -81,9 +76,6 @@ mid_prices = (high_prices+low_prices)/2.0
 train_data = mid_prices[:11000]
 test_data = mid_prices[11000:]
 
-# Scale the data to be between 0 and 1
-# When scaling remember! You normalize both test and train data with respect to training data
-# Because you are not supposed to have access to test data
 scaler = MinMaxScaler()
 train_data = train_data.reshape(-1,1)
 test_data = test_data.reshape(-1,1)
